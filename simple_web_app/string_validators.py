@@ -7,6 +7,7 @@ from .exceptions import (
     NoDigitException,
     NoLowerCaseException,
     NoUpperCaseException,
+    InvalidCharacterException
 )
 
 
@@ -72,3 +73,13 @@ class UpperCaseValidator(Validator):
         if self.upper_case_set.isdisjoint(content_set):
             msg = "Passwords must have at least 1 upper case letter!"
             raise NoUpperCaseException(detail=msg)
+
+class InvalidCharacterValidator(Validator):
+    def __init__(self):
+        self.especial_set = set("^~/")
+
+    def validate(self, content):
+        content_set = set(content)
+        if not self.especial_set.isdisjoint(content_set):
+            msg = "Passwords cannot have these characters: ^~/"
+            raise InvalidCharacterException(detail=msg)
